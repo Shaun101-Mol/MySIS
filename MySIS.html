@@ -4,77 +4,10 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SIS - Student Information System</title>
-  <style>
-    /* ===== Reset & Base ===== */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: "Segoe UI", Tahoma, sans-serif; background: #fafafa; color: #222; }
-    .hidden { display: none !important; }
-
-    /* ===== Auth Pages ===== */
-    .auth-body {
-      background: linear-gradient(135deg, #2d3e50, #4CAF50);
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    }
-    .auth-container {
-      background: white; padding: 30px; border-radius: 12px;
-      width: 100%; max-width: 400px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2); text-align: center;
-    }
-    .auth-container h1 { color: #2d3e50; margin-bottom: 10px; }
-    .auth-container h2 { margin-bottom: 20px; color: #4CAF50; }
-    .auth-container .form-group { margin-bottom: 15px; text-align: left; }
-    .auth-container label { display: block; font-weight: bold; margin-bottom: 5px; }
-    .auth-container input, .auth-container select {
-      width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px;
-    }
-    .auth-container a { color: #4CAF50; font-weight: bold; text-decoration: none; }
-    .auth-container a:hover { text-decoration: underline; }
-
-    /* ===== Navbar ===== */
-    .navbar {
-      display: flex; justify-content: space-between; align-items: center;
-      background: #2d3e50; padding: 15px 20px; color: white;
-    }
-    .navbar .logo { font-size: 22px; }
-    .navbar ul { list-style: none; display: flex; gap: 15px; }
-    .navbar a { text-decoration: none; color: white; font-weight: 500; }
-    .navbar a.btnlink { background: #4CAF50; padding: 6px 12px; border-radius: 6px; }
-    .navbar a.btnlink:hover { background: #45a049; }
-
-    /* ===== Layout ===== */
-    .container { display: flex; min-height: calc(100vh - 70px); }
-    .sidebar { width: 220px; background: #f5f5f5; padding: 20px; border-right: 1px solid #ddd; }
-    .sidebar h2 { margin-bottom: 15px; }
-    .sidebar ul { list-style: none; }
-    .sidebar li { margin: 10px 0; }
-    .sidebar a { text-decoration: none; color: #333; font-weight: 500; }
-    .sidebar a:hover { color: #4CAF50; }
-    .content { flex: 1; padding: 20px; }
-    .content-section { margin-bottom: 36px; }
-
-    /* ===== Cards ===== */
-    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-    .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
-    .card h3 { margin-bottom: 10px; color: #2d3e50; }
-
-    /* ===== Forms & Buttons ===== */
-    .form-group { margin-bottom: 15px; }
-    input, select { padding: 8px; border: 1px solid #ccc; border-radius: 6px; width: 100%; }
-    .btn { background: #4CAF50; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-    .btn:hover { background: #45a049; }
-
-    /* ===== Tables ===== */
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
-    thead { background: #2d3e50; color: white; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-    tr:hover { background: #f1f1f1; }
-
-    /* ===== Footer ===== */
-    footer { background: #2d3e50; color: white; text-align: center; padding: 12px; }
-  </style>
+  <link rel="stylesheet" href="mysis.css">
 </head>
 <body>
-  <!-- ===== LOGIN SECTION ===== -->
+  <!-- login part -->
   <section id="login-section" class="auth-body">
     <div class="auth-container">
       <h1>SIS</h1>
@@ -102,7 +35,7 @@
     </div>
   </section>
 
-  <!-- ===== REGISTER SECTION ===== -->
+  <!-- When you hav to register -->
   <section id="register-section" class="auth-body hidden">
     <div class="auth-container">
       <h1>SIS</h1>
@@ -138,7 +71,7 @@
     </div>
   </section>
 
-  <!-- ===== DASHBOARD SECTION ===== -->
+  <!--  DASHBOARD SECTION  -->
   <section id="app-section" class="hidden">
     <!-- Navbar -->
     <header class="navbar">
@@ -159,6 +92,8 @@
         </section>
         <section id="student-table" class="content-section hidden">
           <h2>Student Records</h2>
+          <button id="addStudentBtn" class="btn" style="margin-bottom:15px; display:none;">Add Student</button>
+          <div id="addStudentFormContainer"></div>
           <table>
             <thead>
               <tr><th>Student #</th><th>Name</th><th>Course</th><th>Year</th><th>Attendance</th><th>Grade</th></tr>
@@ -171,521 +106,50 @@
     <footer><p>© 2025 Student Information System</p></footer>
   </section>
 
-  <script>
-// ===== LocalStorage Helpers =====
-function getUsers() {
-  return JSON.parse(localStorage.getItem("users") || "[]");
-}
-function setUsers(users) {
-  localStorage.setItem("users", JSON.stringify(users));
-}
-function getStudents() {
-  return JSON.parse(localStorage.getItem("students") || "[]");
-}
-function setStudents(students) {
-  localStorage.setItem("students", JSON.stringify(students));
-}
-function setSession(user) {
-  localStorage.setItem("session", JSON.stringify(user));
-}
-function getSession() {
-  return JSON.parse(localStorage.getItem("session") || "null");
-}
-function clearSession() {
-  localStorage.removeItem("session");
-}
+  <!-- Profile Modal -->
+<div id="profileModal" class="auth-body hidden" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1000;background:rgba(0,0,0,0.2);">
+  <div class="auth-container" style="max-width:350px;">
+    <h2>Edit Profile</h2>
+    <form>
+      <div class="form-group"><label>Name:</label><input type="text" name="name" required></div>
+      <div class="form-group"><label>Email:</label><input type="email" name="email" required></div>
+      <button type="submit" class="btn">Save</button>
+      <button type="button" class="btn close-modal" style="background:#e74c3c;margin-left:10px;">Cancel</button>
+    </form>
+  </div>
+</div>
 
-// ===== Demo Data Init =====
-if (!localStorage.getItem("students")) {
-  const users = getUsers();
-  const studentUsers = users.filter(u => u.role === "Student");
-  if (studentUsers.length > 0) {
-    setStudents(studentUsers.map((u, i) => ({
-      number: (202500 + i + 1).toString(),
-      name: u.name,
-      email: u.email,
-      course: "",
-      year: "",
-      attendance: "",
-      grade: ""
-    })));
-  } else {
-    setStudents([]);
-  }
-}
+<!-- Change Password Modal -->
+<div id="passwordModal" class="auth-body hidden" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1000;background:rgba(0,0,0,0.2);">
+  <div class="auth-container" style="max-width:350px;">
+    <h2>Change Password</h2>
+    <form>
+      <div class="form-group"><label>Old Password:</label><input type="password" name="oldpass" required></div>
+      <div class="form-group"><label>New Password:</label><input type="password" name="newpass" required></div>
+      <div class="form-group"><label>Confirm New Password:</label><input type="password" name="confpass" required></div>
+      <button type="submit" class="btn">Change</button>
+      <button type="button" class="btn close-modal" style="background:#e74c3c;margin-left:10px;">Cancel</button>
+    </form>
+  </div>
+</div>
 
-// ===== Section Switching =====
-const loginSection = document.getElementById("login-section");
-const registerSection = document.getElementById("register-section");
-const appSection = document.getElementById("app-section");
-const dashboardSection = document.getElementById("dashboard");
-const studentTableSection = document.getElementById("student-table");
-
-document.getElementById("goRegister").onclick = () => {
-  loginSection.classList.add("hidden");
-  registerSection.classList.remove("hidden");
-};
-document.getElementById("goLogin").onclick = () => {
-  registerSection.classList.add("hidden");
-  loginSection.classList.remove("hidden");
-};
-
-// ===== Login =====
-document.getElementById("loginForm").onsubmit = (e) => {
-  e.preventDefault();
-  const username = document.getElementById("login-username").value.trim();
-  const password = document.getElementById("login-password").value;
-  const role = document.getElementById("login-role").value;
-  const users = getUsers();
-  const user = users.find(u => (u.email === username || u.name === username) && u.password === password && u.role === role);
-  if (!user) {
-    alert("Invalid credentials or role.");
-    return;
-  }
-  setSession(user);
-  loginSection.classList.add("hidden");
-  appSection.classList.remove("hidden");
-  buildUI(user);
-};
-
-// ===== Register =====
-document.getElementById("registerForm").onsubmit = (e) => {
-  e.preventDefault();
-  const name = document.getElementById("reg-name").value.trim();
-  const email = document.getElementById("reg-email").value.trim();
-  const pass = document.getElementById("reg-pass").value;
-  const conf = document.getElementById("reg-conf").value;
-  const role = document.getElementById("reg-role").value;
-  if (pass !== conf) {
-    alert("Passwords do not match.");
-    return;
-  }
-  const users = getUsers();
-  if (users.some(u => u.email === email)) {
-    alert("Email already registered.");
-    return;
-  }
-  users.push({ name, email, password: pass, role });
-  setUsers(users);
-
-  // === Automatically add student to records if role is Student ===
-  if (role === "Student") {
-    let students = getStudents();
-    if (!students.some(s => s.email === email)) {
-      const nextNumber = (202500 + students.length + 1).toString();
-      students.push({
-        number: nextNumber,
-        name: name,
-        email: email,
-        course: "",
-        year: "",
-        attendance: "",
-        grade: ""
-      });
-      setStudents(students);
-    }
-  }
-
-  alert("User registered! Now login.");
-  registerSection.classList.add("hidden");
-  loginSection.classList.remove("hidden");
-};
-
-// ===== Build UI =====
-function buildUI(user){
-  document.getElementById("topNav").innerHTML = `
-    <li><a href="#" onclick="showSection('dashboard')">Dashboard</a></li>
-    ${user.role!=="Student"?'<li><a href="#" onclick="showSection(\'student-table\')">Students</a></li>':""}
-    <li><span style="margin-right:10px;">${user.name} (${user.role})</span></li>
-    <li><a href="#" class="btnlink" onclick="logout()">Logout</a></li>
-  `;
-  document.getElementById("sidebarMenu").innerHTML = `
-    <li><a href="#" onclick="showSection('dashboard')">➤ Dashboard</a></li>
-    ${user.role!=="Student"?'<li><a href="#" onclick="showSection(\'student-table\')">➤ Student Records</a></li>':""}
-    <li><a href="#" onclick="showProfile()">➤ Profile</a></li>
-    <li><a href="#" onclick="showChangePassword()">➤ Change Password</a></li>
-  `;
-  document.getElementById("dashboardCards").innerHTML = `
-    <div class="card"><h3>Total Students</h3><p>${getStudents().length}</p></div>
-    <div class="card"><h3>Avg Attendance</h3><p>${averageAttendance()}%</p></div>
-    ${user.role === "Teacher" || user.role === "Admin" ? renderPassRateCard() : ""}
-    ${user.role === "Student" ? renderStudentInfoCard(user) : ""}
-  `;
-  renderStudentTable(user);
-  showSection('dashboard');
-  if (user.role !== "Student") addStudentForm();
-  else removeStudentForm();
-}
-
-// Add this helper function:
-function renderPassRateCard() {
-  const students = getStudents();
-  // Consider "passing" as grade >= 50%
-  let passed = 0, total = 0;
-  students.forEach(s => {
-    if (s.grade) {
-      // Remove % and parse
-      const gradeNum = parseInt(s.grade.replace('%',''));
-      if (!isNaN(gradeNum)) {
-        total++;
-        if (gradeNum >= 50) passed++;
-      }
-    }
-  });
-  const percent = total ? Math.round((passed/total)*100) : 0;
-  return `
-    <div class="card">
-      <h3>Pass Rate</h3>
-      <p>${percent}% of students passed</p>
-      <small>(Grade ≥ 50%)</small>
-    </div>
-  `;
-}
-
-function renderStudentInfoCard(user) {
-  const students = getStudents();
-  const student = students.find(s => s.email === user.email);
-  if (!student) return "";
-  return `
-    <div class="card">
-      <h3>Your Academic Info</h3>
-      <p><strong>Course:</strong> ${student.course || "N/A"}</p>
-      <p><strong>Year:</strong> ${student.year || "N/A"}</p>
-      <p><strong>Grade:</strong> ${student.grade || "N/A"}</p>
-    </div>
-  `;
-}
-
-function averageAttendance() {
-  const students = getStudents();
-  if (!students.length) return "0";
-  let total = 0, count = 0;
-  students.forEach(s => {
-    const att = parseInt(s.attendance);
-    if (!isNaN(att)) { total += att; count++; }
-  });
-  return count ? Math.round(total/count) : "0";
-}
-
-// ===== Search and Filter =====
-let studentSearchTerm = "";
-function renderStudentTable(user) {
-  const students = getStudents();
-  const body = document.getElementById("studentTableBody");
-  let filtered = students;
-  if (user.role === "Student") {
-    filtered = students.filter(s => s.email === user.email);
-  } else if (studentSearchTerm) {
-    filtered = students.filter(s =>
-      s.name.toLowerCase().includes(studentSearchTerm) ||
-      s.email.toLowerCase().includes(studentSearchTerm) ||
-      s.number.includes(studentSearchTerm)
-    );
-  }
-  body.innerHTML = filtered.map((s) =>
-    `<tr>
-      <td>${s.number}</td>
-      <td>${s.name}</td>
-      <td>${s.course}</td>
-      <td>${s.year}</td>
-      <td>${s.attendance}</td>
-      <td>${s.grade}</td>
-      ${user.role !== "Student" ? `<td>
-        <button class="btn" onclick="editStudent('${s.number}')">Edit</button>
-        <button class="btn" style="background:#e74c3c;margin-left:5px;" onclick="deleteStudent('${s.number}')">Delete</button>
-      </td>` : ""}
-    </tr>`
-  ).join("");
-  // Add table header for edit/delete if teacher/admin
-  const thead = body.parentElement.querySelector("thead tr");
-  if (user.role !== "Student" && !thead.querySelector(".edit-header")) {
-    thead.innerHTML += `<th class="edit-header">Actions</th>`;
-  }
-  if (user.role === "Student" && thead.querySelector(".edit-header")) {
-    thead.querySelector(".edit-header").remove();
-  }
-  // Show search bar for admin/teacher
-  let searchBar = document.getElementById("studentSearchBar");
-  if (user.role !== "Student") {
-    if (!searchBar) {
-      searchBar = document.createElement("input");
-      searchBar.id = "studentSearchBar";
-      searchBar.placeholder = "Search by name, email, or #";
-      searchBar.style = "margin-bottom:10px;width:250px;";
-      searchBar.oninput = function() {
-        studentSearchTerm = this.value.trim().toLowerCase();
-        renderStudentTable(getSession());
-      };
-      body.parentElement.parentElement.insertBefore(searchBar, body.parentElement);
-    }
-    searchBar.classList.remove("hidden");
-  } else if (searchBar) {
-    searchBar.classList.add("hidden");
-  }
-}
-
-// ===== Edit Student Modal =====
-window.editStudent = function(studentNumber) {
-  const students = getStudents();
-  const idx = students.findIndex(s => s.number === studentNumber);
-  if (idx === -1) return;
-  const s = students[idx];
-  showStudentModal("Edit Student", s, function(updated) {
-    students[idx] = { ...s, ...updated };
-    setStudents(students);
-    renderStudentTable(getSession());
-    document.getElementById("dashboardCards").innerHTML = `
-      <div class="card"><h3>Total Students</h3><p>${students.length}</p></div>
-      <div class="card"><h3>Avg Attendance</h3><p>${averageAttendance()}%</p></div>
-    `;
-  });
-};
-
-// ===== Delete Student =====
-window.deleteStudent = function(studentNumber) {
-  if (!confirm("Are you sure you want to delete this student record?")) return;
-  let students = getStudents();
-  const idx = students.findIndex(s => s.number === studentNumber);
-  if (idx === -1) return;
-  students.splice(idx, 1);
-  setStudents(students);
-  renderStudentTable(getSession());
-  document.getElementById("dashboardCards").innerHTML = `
-    <div class="card"><h3>Total Students</h3><p>${students.length}</p></div>
-    <div class="card"><h3>Avg Attendance</h3><p>${averageAttendance()}%</p></div>
-  `;
-};
-
-// ===== Add Student Form =====
-function addStudentForm() {
-  removeStudentForm();
-  const section = document.getElementById("student-table");
-  const form = document.createElement("form");
-  form.id = "addStudentForm";
-  form.innerHTML = `
-    <h3>Add Student</h3>
-    <div class="form-group"><input type="text" placeholder="Student Email" required name="email" id="student-email"></div>
-    <div id="student-extra-fields"></div>
-    <div class="form-group"><input type="text" placeholder="Student #" required name="number"></div>
-    <div class="form-group"><input type="text" placeholder="Course" required name="course"></div>
-    <div class="form-group"><input type="text" placeholder="Year" required name="year"></div>
-    <div class="form-group"><input type="number" min="0" max="100" placeholder="Attendance (%)" required name="attendance"></div>
-    <div class="form-group"><input type="number" min="0" max="100" placeholder="Grade (%)" required name="grade"></div>
-    <button type="submit" class="btn">Add Student</button>
-  `;
-
-  form.querySelector("#student-email").addEventListener("blur", function() {
-    const email = this.value.trim();
-    const users = getUsers();
-    const studentUser = users.find(u => u.email === email && u.role === "Student");
-    const extraFields = form.querySelector("#student-extra-fields");
-    if (!studentUser) {
-      extraFields.innerHTML = `
-        <div class="form-group"><input type="text" placeholder="Full Name" required name="name"></div>
-        <div class="form-group"><input type="password" placeholder="Set Password" required name="password"></div>
-      `;
-    } else {
-      extraFields.innerHTML = `
-        <div class="form-group"><input type="text" value="${studentUser.name}" readonly name="name"></div>
-      `;
-    }
-  });
-
-  form.onsubmit = function(e) {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(form));
-    const users = getUsers();
-    let studentUser = users.find(u => u.email === data.email && u.role === "Student");
-    if (!studentUser) {
-      if (!data.name || !data.password) {
-        alert("Please enter name and password to register the student.");
-        return;
-      }
-      if (users.some(u => u.email === data.email)) {
-        alert("Email already registered with another role.");
-        return;
-      }
-      studentUser = { name: data.name, email: data.email, password: data.password, role: "Student" };
-      users.push(studentUser);
-      setUsers(users);
-      alert("Student registered as user!");
-    }
-    if (!/^\d+$/.test(data.number)) { alert("Student # must be numeric."); return; }
-    if (isNaN(data.attendance) || data.attendance < 0 || data.attendance > 100) { alert("Attendance must be a number between 0 and 100."); return; }
-    if (isNaN(data.grade) || data.grade < 0 || data.grade > 100) { alert("Grade must be a number between 0 and 100."); return; }
-    const students = getStudents();
-    if (students.some(s => s.number === data.number)) {
-      alert("Student # already exists.");
-      return;
-    }
-    students.push({
-      number: data.number,
-      name: studentUser.name,
-      email: studentUser.email,
-      course: data.course,
-      year: data.year,
-      attendance: `${data.attendance}%`,
-      grade: `${data.grade}%`
-    });
-    setStudents(students);
-    renderStudentTable(getSession());
-    document.getElementById("dashboardCards").innerHTML = `
-      <div class="card"><h3>Total Students</h3><p>${students.length}</p></div>
-      <div class="card"><h3>Avg Attendance</h3><p>${averageAttendance()}%</p></div>
-    `;
-    form.reset();
-    form.querySelector("#student-extra-fields").innerHTML = "";
-  };
-  section.insertBefore(form, section.querySelector("table"));
-}
-
-// ===== Modal for Editing Student =====
-function showStudentModal(title, student, onSave) {
-  const modal = document.getElementById("studentModal");
-  const form = modal.querySelector("form");
-  modal.querySelector(".modal-title").textContent = title;
-  form.querySelector("[name='number']").value = student.number;
-  form.querySelector("[name='name']").value = student.name;
-  form.querySelector("[name='course']").value = student.course;
-  form.querySelector("[name='year']").value = student.year;
-  // Remove % for editing
-  form.querySelector("[name='attendance']").value = student.attendance ? student.attendance.replace('%', '') : '';
-  form.querySelector("[name='grade']").value = student.grade ? student.grade.replace('%', '') : '';
-  modal.classList.remove("hidden");
-  form.onsubmit = function(e) {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(form));
-    if (!/^\d+$/.test(data.number)) { alert("Student # must be numeric."); return; }
-    if (isNaN(data.attendance) || data.attendance < 0 || data.attendance > 100) { alert("Attendance must be a number between 0 and 100."); return; }
-    if (isNaN(data.grade) || data.grade < 0 || data.grade > 100) { alert("Grade must be a number between 0 and 100."); return; }
-    modal.classList.add("hidden");
-    // Store as percentage string
-    data.attendance = `${data.attendance}%`;
-    data.grade = `${data.grade}%`;
-    onSave(data);
-  };
-  modal.querySelector(".close-modal").onclick = function() {
-    modal.classList.add("hidden");
-  };
-}
-
-// ===== Profile Page =====
-window.showProfile = function() {
-  const user = getSession();
-  const modal = document.getElementById("profileModal");
-  modal.querySelector("[name='name']").value = user.name;
-  modal.querySelector("[name='email']").value = user.email;
-  modal.classList.remove("hidden");
-  modal.onsubmit = function(e) {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(modal));
-    let users = getUsers();
-    const idx = users.findIndex(u => u.email === user.email && u.role === user.role);
-    if (idx !== -1) {
-      users[idx].name = data.name;
-      users[idx].email = data.email;
-      setUsers(users);
-      setSession(users[idx]);
-      alert("Profile updated!");
-      modal.classList.add("hidden");
-      buildUI(users[idx]);
-    }
-  };
-  modal.querySelector(".close-modal").onclick = function() {
-    modal.classList.add("hidden");
-  };
-};
-
-// ===== Change Password =====
-window.showChangePassword = function() {
-  const user = getSession();
-  const modal = document.getElementById("passwordModal");
-  // Reset all input fields in the modal
-  Array.from(modal.querySelectorAll("input")).forEach(input => input.value = "");
-  modal.classList.remove("hidden");
-  modal.onsubmit = function(e) {
-    e.preventDefault();
-    const oldPass = modal.querySelector("[name='oldpass']").value;
-    const newPass = modal.querySelector("[name='newpass']").value;
-    const confPass = modal.querySelector("[name='confpass']").value;
-    if (newPass !== confPass) {
-      alert("Passwords do not match.");
-      return;
-    }
-    let users = getUsers();
-    const idx = users.findIndex(u => u.email === user.email && u.role === user.role);
-    if (idx !== -1 && users[idx].password === oldPass) {
-      users[idx].password = newPass;
-      setUsers(users);
-      alert("Password changed!");
-      modal.classList.add("hidden");
-    } else {
-      alert("Old password incorrect.");
-    }
-  };
-  modal.querySelector(".close-modal").onclick = function() {
-    modal.classList.add("hidden");
-  };
-};
-
-// ===== Navigation =====
-window.showSection = function(sectionId) {
-  dashboardSection.classList.add("hidden");
-  studentTableSection.classList.add("hidden");
-  if (sectionId === "dashboard") dashboardSection.classList.remove("hidden");
-  if (sectionId === "student-table") studentTableSection.classList.remove("hidden");
-};
-
-// ===== Logout =====
-window.logout = function() {
-  clearSession();
-  appSection.classList.add("hidden");
-  loginSection.classList.remove("hidden");
-};
-
-// ===== Auto-login if session exists =====
-window.onload = function() {
-  const user = getSession();
-  if (user) {
-    loginSection.classList.add("hidden");
-    appSection.classList.remove("hidden");
-    buildUI(user);
-  }
-};
-  </script>
-
-  <!-- ===== MODALS ===== -->
-  <div id="studentModal" class="hidden" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:1000;">
-    <form style="background:#fff;padding:30px;border-radius:10px;min-width:300px;position:relative;" class="modal-form">
-      <span class="modal-title" style="font-size:20px;font-weight:bold;"></span>
-      <button type="button" class="close-modal" style="position:absolute;top:10px;right:10px;font-size:18px;">&times;</button>
-      <div class="form-group"><label>Student #</label><input type="text" name="number" required></div>
+<!-- Edit Student Modal -->
+<div id="studentModal" class="auth-body hidden" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1000;background:rgba(0,0,0,0.2);">
+  <div class="auth-container" style="max-width:400px;">
+    <h2 class="modal-title">Edit Student</h2>
+    <form>
+      <div class="form-group"><label>Student #</label><input type="text" name="number" required readonly></div>
       <div class="form-group"><label>Name</label><input type="text" name="name" required></div>
       <div class="form-group"><label>Course</label><input type="text" name="course" required></div>
       <div class="form-group"><label>Year</label><input type="text" name="year" required></div>
-      <div class="form-group"><label>Attendance (%)</label><input type="text" name="attendance" required></div>
-      <div class="form-group"><label>Grade (%)</label><input type="text" name="grade" required></div>
+      <div class="form-group"><label>Attendance (%)</label><input type="number" min="0" max="100" name="attendance" required></div>
+      <div class="form-group"><label>Grade (%)</label><input type="number" min="0" max="100" name="grade" required></div>
       <button type="submit" class="btn">Save</button>
+      <button type="button" class="btn close-modal" style="background:#e74c3c;margin-left:10px;">Cancel</button>
     </form>
   </div>
-  <div id="profileModal" class="hidden" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:1000;">
-    <form style="background:#fff;padding:30px;border-radius:10px;min-width:300px;position:relative;" class="modal-form">
-      <span style="font-size:20px;font-weight:bold;">Edit Profile</span>
-      <button type="button" class="close-modal" style="position:absolute;top:10px;right:10px;font-size:18px;">&times;</button>
-      <div class="form-group"><label>Name</label><input type="text" name="name" required></div>
-      <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
-      <button type="submit" class="btn">Save</button>
-    </form>
-  </div>
-  <div id="passwordModal" class="hidden" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:1000;">
-    <form style="background:#fff;padding:30px;border-radius:10px;min-width:300px;position:relative;" class="modal-form">
-      <span style="font-size:20px;font-weight:bold;">Change Password</span>
-      <button type="button" class="close-modal" style="position:absolute;top:10px;right:10px;font-size:18px;">&times;</button>
-      <div class="form-group"><label>Old Password</label><input type="password" name="oldpass" required></div>
-      <div class="form-group"><label>New Password</label><input type="password" name="newpass" required></div>
-      <div class="form-group"><label>Confirm New Password</label><input type="password" name="confpass" required></div>
-      <button type="submit" class="btn">Change</button>
-    </form>
-  </div>
+</div>
+
+  <script src="mysis.js"></script>
 </body>
 </html>
