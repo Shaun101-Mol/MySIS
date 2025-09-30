@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SIS - Student Information System</title>
+  <link rel="stylesheet" href="mysis.css">
+</head>
+<body>
+  <!-- login part -->
+  <section id="login-section" class="auth-body">
+    <div class="auth-container">
+      <h1>SIS</h1>
+      <h2>Login</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Email / Username:</label>
+          <input type="text" id="login-username" required>
+        </div>
+        <div class="form-group">
+          <label>Password:</label>
+          <input type="password" id="login-password" required>
+        </div>
+        <div class="form-group">
+          <label>Role:</label>
+          <select id="login-role">
+            <option value="Admin">Admin</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Student">Student</option>
+          </select>
+        </div>
+        <button type="submit" class="btn">Login</button>
+      </form>
+      <p>No account? <a href="#" id="goRegister">Register here</a></p>
+    </div>
+  </section>
+
+  <!-- When you hav to register -->
+  <section id="register-section" class="auth-body hidden">
+    <div class="auth-container">
+      <h1>SIS</h1>
+      <h2>Register</h2>
+      <form id="registerForm">
+        <div class="form-group">
+          <label>Full Name:</label>
+          <input type="text" id="reg-name" required>
+        </div>
+        <div class="form-group">
+          <label>Email:</label>
+          <input type="email" id="reg-email" required>
+        </div>
+        <div class="form-group">
+          <label>Password:</label>
+          <input type="password" id="reg-pass" required>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password:</label>
+          <input type="password" id="reg-conf" required>
+        </div>
+        <div class="form-group">
+          <label>Role:</label>
+          <select id="reg-role">
+            <option value="Student">Student</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+        <button type="submit" class="btn">Register</button>
+      </form>
+      <p>Have an account? <a href="#" id="goLogin">Login here</a></p>
+    </div>
+  </section>
+
+  <!--  DASHBOARD SECTION  -->
+  <section id="app-section" class="hidden">
+    <!-- Navbar -->
+    <header class="navbar">
+      <h1 class="logo">SIS</h1>
+      <nav><ul id="topNav"></ul></nav>
+    </header>
+    <main class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2>Menu</h2>
+        <ul id="sidebarMenu"></ul>
+      </aside>
+      <!-- Content -->
+      <section class="content">
+        <section id="dashboard" class="content-section">
+          <h2>Dashboard</h2>
+          <div class="card-grid" id="dashboardCards"></div>
+        </section>
+        <section id="student-table" class="content-section hidden">
+          <h2>Student Records</h2>
+          <button id="addStudentBtn" class="btn" style="margin-bottom:15px; display:none;">Add Student</button>
+          <div id="addStudentFormContainer"></div>
+          <table>
+            <thead>
+              <tr><th>Student #</th><th>Name</th><th>Course</th><th>Year</th><th>Attendance</th><th>Grade</th></tr>
+            </thead>
+            <tbody id="studentTableBody"></tbody>
+          </table>
+        </section>
+      </section>
+    </main>
+    <footer><p>© 2025 Student Information System</p></footer>
+  </section>
+
+  <!-- Profile Modal -->
+<div id="profileModal" class="auth-body hidden" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1000;background:rgba(0,0,0,0.2);">
+  <div class="auth-container" style="max-width:350px;">
+    <h2>Edit Profile</h2>
+    <form>
+      <div class="form-group"><label>Name:</label><input type="text" name="name" required></div>
+      <div class="form-group"><label>Email:</label><input type="email" name="email" required></div>
+      <button type="submit" class="btn">Save</button>
+      <button type="button" class="btn close-modal" style="background:#e74c3c;margin-left:10px;">Cancel</button>
+    </form>
+  </div>
+</div>
+
+<!-- Change Password Modal -->
+<div id="passwordModal" class="auth-body hidden" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1000;background:rgba(0,0,0,0.2);">
+  <div class="auth-container" style="max-width:350px;">
+    <h2>Change Password</h2>
+    <form>
+      <div class="form-group"><label>Old Password:</label><input type="password" name="oldpass" required></div>
+      <div class="form-group"><label>New Password:</label><input type="password" name="newpass" required></div>
+      <div class="form-group"><label>Confirm New Password:</label><input type="password" name="confpass" required></div>
+      <button type="submit" class="btn">Change</button>
+      <button type="button" class="btn close-modal" style="background:#e74c3c;margin-left:10px;">Cancel</button>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Student Modal -->
+<div id="studentModal" class="auth-body hidden" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1000;background:rgba(0,0,0,0.2);">
+  <div class="auth-container" style="max-width:400px;">
+    <h2 class="modal-title">Edit Student</h2>
+    <form>
+      <div class="form-group"><label>Student #</label><input type="text" name="number" required readonly></div>
+      <div class="form-group"><label>Name</label><input type="text" name="name" required></div>
+      <div class="form-group"><label>Course</label><input type="text" name="course" required></div>
+      <div class="form-group"><label>Year</label><input type="text" name="year" required></div>
+      <div class="form-group"><label>Attendance (%)</label><input type="number" min="0" max="100" name="attendance" required></div>
+      <div class="form-group"><label>Grade (%)</label><input type="number" min="0" max="100" name="grade" required></div>
+      <button type="submit" class="btn">Save</button>
+      <button type="button" class="btn close-modal" style="background:#e74c3c;margin-left:10px;">Cancel</button>
+    </form>
+  </div>
+</div>
+
+  <script src="mysis.js"></script>
+</body>
+</html>
