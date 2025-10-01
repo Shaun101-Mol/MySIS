@@ -139,12 +139,12 @@ function buildUI(user){
   `;
   renderStudentTable(user);
   showSection('dashboard');
-  // Show Add Student button only for Teacher/Admin
+  // Show Add Student button only for Admin
   const addBtn = document.getElementById("addStudentBtn");
   if (addBtn) {
-    addBtn.style.display = (user.role === "Teacher" || user.role === "Admin") ? "inline-block" : "none";
+    addBtn.style.display = (user.role === "Admin") ? "inline-block" : "none";
     addBtn.onclick = function() {
-      addStudentForm(); // <-- FIXED: call the correct function
+      addStudentForm();
     };
   }
 }
